@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DATA SCIENTISTS - Friends Hub</title>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-teal: #00d4aa;
+            --cyber-purple: #8b5cf6;
+            --neon-blue: #3b82f6;
+            --matte-black: #1a1a1a;
+            --dark-bg: #0f0f0f;
+            --light-bg: #ffffff;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --card-dark: #1f1f1f;
+            --card-light: #f8f9fa;
+            --shadow-dark: rgba(0, 212, 170, 0.3);
+            --shadow-light: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: var(--light-bg);
+            --bg-secondary: var(--card-light);
+            --text-primary: var(--text-dark);
+            --text-secondary: #666;
+            --shadow-color: var(--shadow-light);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: var(--dark-bg);
+            --bg-secondary: var(--card-dark);
+            --text-primary: var(--text-light);
+            --text-secondary: #ccc;
+            --shadow-color: var(--shadow-dark);
+        }
+
+        body {
+            font-family: 'Inter', -webkit-system-font, system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-teal);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-teal);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 0 20px var(--primary-teal);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--matte-black) 0%, var(--dark-bg) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300d4aa" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(10px, 10px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(0, 212, 170, 0.5)); }
+            100% { filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.8)); }
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 1s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 1.5s both;
+        }
+
+        .cta-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple));
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-btn:hover::before {
+            left: 100%;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.4);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple));
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 50px var(--shadow-color);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Members Section */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .member-card {
+            perspective: 1000px;
+            height: 300px;
+        }
+
+        .member-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .member-card:hover .member-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .member-card-front, .member-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .member-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple));
+            color: white;
+        }
+
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05) rotateZ(2deg);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--primary-teal), var(--cyber-purple));
+            color: white;
+        }
+
+        /* Fun Zone */
+        .fun-zone {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-teal), var(--cyber-purple), var(--neon-blue), var(--primary-teal));
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .spinner-inner {
+            width: 180px;
+            height: 180px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .spinner.spinning {
+            animation: spin 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(1440deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body data-theme="dark"><!-- Navbar -->
+  <nav class="navbar">
+   <div class="nav-container">
+    <div class="logo">
+     DATA SCIENTISTS
+    </div>
+    <ul class="nav-links">
+     <li><a href="#home">Home</a></li>
+     <li><a href="#education">Education</a></li>
+     <li><a href="#memories">Memories</a></li>
+     <li><a href="#gallery">Gallery</a></li>
+     <li><a href="#fun-zone">Fun Zone</a></li>
+     <li><a href="#members">Members</a></li>
+     <li><a href="#achievements">Achievements</a></li>
+    </ul><button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+   </div>
+  </nav><!-- Hero Section -->
+  <section id="home" class="hero">
+   <div class="hero-content">
+    <h1 class="hero-title" id="group-title">DATA SCIENTISTS</h1>
+    <p class="hero-tagline" id="tagline-text">Friends • Fun • Code • Memories</p>
+    <p class="hero-subtitle" id="hero-subtitle-text">Where friendship meets code and memories last forever</p>
+    <div class="cta-buttons"><a href="#education" class="cta-btn">📚 Notes</a> <a href="#education" class="cta-btn">💻 Practicals</a> <a href="#education" class="cta-btn">📊 Marksheets</a> <a href="#gallery" class="cta-btn">📸 Gallery</a> <a href="#fun-zone" class="cta-btn">🎮 Fun Zone</a>
+    </div>
+   </div>
+  </section><!-- Education Section -->
+  <section id="education" class="section fade-in">
+   <h2 class="section-title">📚 Education Hub</h2>
+   <div class="cards-grid">
+    <div class="card"><span class="card-icon">📝</span>
+     <h3 class="card-title">Notes Collection</h3>
+     <p class="card-description">Subject-wise notes shared by friends. From Data Structures to Machine Learning - we've got it all covered!</p>
+    </div>
+    <div class="card"><span class="card-icon">💻</span>
+     <h3 class="card-title">Lab Practicals</h3>
+     <p class="card-description">C, Python, Web Development, DBMS, and Data Science practicals. Code together, learn together!</p>
+    </div>
+    <div class="card"><span class="card-icon">📊</span>
+     <h3 class="card-title">Marksheets</h3>
+     <p class="card-description">Semester-wise results and achievements. Celebrating our academic journey together!</p>
+    </div>
+    <div class="card"><span class="card-icon">📋</span>
+     <h3 class="card-title">Assignments</h3>
+     <p class="card-description">Collaborative assignments and projects. Sharing knowledge and helping each other succeed!</p>
+    </div>
+   </div>
+  </section><!-- Memories Section -->
+  <section id="memories" class="section fade-in">
+   <h2 class="section-title">💫 Our Memories</h2>
+   <div class="cards-grid">
+    <div class="card"><span class="card-icon">🏖</span>
+     <h3 class="card-title">Epic Trips</h3>
+     <p class="card-description">From beach adventures to mountain treks - our friendship knows no bounds!</p>
+    </div>
+    <div class="card"><span class="card-icon">🎂</span>
+     <h3 class="card-title">Birthday Celebrations</h3>
+     <p class="card-description">Every birthday is special when celebrated with the squad. Cake fights included!</p>
+    </div>
+    <div class="card"><span class="card-icon">🍕</span>
+     <h3 class="card-title">Food Adventures</h3>
+     <p class="card-description">Late night food runs, restaurant hopping, and cooking disasters - all part of the fun!</p>
+    </div>
+    <div class="card"><span class="card-icon">🏠</span>
+     <h3 class="card-title">Sleepovers</h3>
+     <p class="card-description">Movie marathons, gaming sessions, and deep conversations that last till sunrise!</p>
+    </div>
+   </div>
+  </section><!-- Gallery Section -->
+  <section id="gallery" class="section fade-in">
+   <h2 class="section-title">📸 Photo Gallery</h2>
+   <div class="gallery-grid">
+    <div class="gallery-item" onclick="openModal('Trip to Goa - Beach vibes with the squad!')">
+     <div class="gallery-placeholder">
+      🏖
+     </div>
+    </div>
+    <div class="gallery-item" onclick="openModal('Birthday surprise for our coding genius!')">
+     <div class="gallery-placeholder">
+      🎂
+     </div>
+    </div>
+    <div class="gallery-item" onclick="openModal('Late night coding session with pizza!')">
+     <div class="gallery-placeholder">
+      🍕
+     </div>
+    </div>
+    <div class="gallery-item" onclick="openModal('Group selfie at the hackathon!')">
+     <div class="gallery-placeholder">
+      📱
+     </div>
+    </div>
+    <div class="gallery-item" onclick="openModal('Movie night at home - popcorn everywhere!')">
+     <div class="gallery-placeholder">
+      🍿
+     </div>
+    </div>
+    <div class="gallery-item" onclick="openModal('Graduation day - we made it together!')">
+     <div class="gallery-placeholder">
+      🎓
+     </div>
+    </div>
+   </div>
+  </section><!-- Members Section -->
+  <section id="members" class="section fade-in">
+   <h2 class="section-title">👥 Our Squad</h2>
+   <div class="members-grid">
+    <div class="member-card">
+     <div class="member-card-inner">
+      <div class="member-card-front">
+       <div class="member-avatar">
+        🧑‍💻
+       </div>
+       <h3>Alex "Hacker Dada"</h3>
+       <p>The Code Wizard</p>
+      </div>
+      <div class="member-card-back">
+       <h3>Fun Fact</h3>
+       <p>Can debug code in sleep and once solved a bug by dreaming about it!</p>
+      </div>
+     </div>
+    </div>
+    <div class="member-card">
+     <div class="member-card-inner">
+      <div class="member-card-front">
+       <div class="member-avatar">
+        😂
+       </div>
+       <h3>Sam "Meme King"</h3>
+       <p>The Comedy Central</p>
+      </div>
+      <div class="member-card-back">
+       <h3>Fun Fact</h3>
+       <p>Has a meme for every situation and can make anyone laugh even during exams!</p>
+      </div>
+     </div>
+    </div>
+    <div class="member-card">
+     <div class="member-card-inner">
+      <div class="member-card-front">
+       <div class="member-avatar">
+        🤫
+       </div>
+       <h3>Jordan "Silent Killer"</h3>
+       <p>The Mysterious Genius</p>
+      </div>
+      <div class="member-card-back">
+       <h3>Fun Fact</h3>
+       <p>Speaks less but codes more. Once completed an entire project without saying a word!</p>
+      </div>
+     </div>
+    </div>
+    <div class="member-card">
+     <div class="member-card-inner">
+      <div class="member-card-front">
+       <div class="member-avatar">
+        🎨
+       </div>
+       <h3>Casey "Design Guru"</h3>
+       <p>The Creative Mind</p>
+      </div>
+      <div class="member-card-back">
+       <h3>Fun Fact</h3>
+       <p>Can make even the ugliest code look beautiful with amazing UI designs!</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Fun Zone -->
+  <section id="fun-zone" class="section fade-in">
+   <h2 class="section-title">🎮 Fun Zone</h2>
+   <div class="fun-zone">
+    <h3>Truth or Dare Spinner</h3>
+    <p>Spin the wheel and let fate decide your challenge!</p>
+    <div class="spinner" id="spinner" onclick="spinWheel()">
+     <div class="spinner-inner" id="spinner-result">
+      Click to Spin!
+     </div>
+    </div>
+    <div class="cards-grid" style="margin-top: 3rem;">
+     <div class="card"><span class="card-icon">😂</span>
+      <h3 class="card-title">Meme Collection</h3>
+      <p class="card-description">Our legendary memes that only we understand. Inside jokes galore!</p>
+     </div>
+     <div class="card"><span class="card-icon">🗳</span>
+      <h3 class="card-title">Group Polls</h3>
+      <p class="card-description">Where should we go next? What should we eat? Democracy in action!</p>
+     </div>
+     <div class="card"><span class="card-icon">🔥</span>
+      <h3 class="card-title">Roast Board</h3>
+      <p class="card-description">Friendly roasts and savage comebacks. All in good fun, of course!</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Achievements Section -->
+  <section id="achievements" class="section fade-in">
+   <h2 class="section-title">🏆 Achievements</h2>
+   <div class="cards-grid">
+    <div class="card"><span class="card-icon">🚀</span>
+     <h3 class="card-title">Group Projects</h3>
+     <p class="card-description">Amazing projects we built together - from web apps to AI models!</p>
+    </div>
+    <div class="card"><span class="card-icon">📜</span>
+     <h3 class="card-title">Certificates</h3>
+     <p class="card-description">All our certifications and course completions. Learning never stops!</p>
+    </div>
+    <div class="card"><span class="card-icon">💡</span>
+     <h3 class="card-title">Skills Showcase</h3>
+     <p class="card-description">From Python to React, Machine Learning to Design - we've got skills!</p>
+    </div>
+    <div class="card"><span class="card-icon">🎯</span>
+     <h3 class="card-title">Hackathon Wins</h3>
+     <p class="card-description">Our victories in various hackathons and coding competitions!</p>
+    </div>
+   </div>
+  </section><!-- Modal -->
+  <div id="modal" class="modal">
+   <div class="modal-content"><span class="close" onclick="closeModal()">×</span>
+    <h2 id="modal-title">Photo Details</h2>
+    <p id="modal-description">Photo description goes here...</p>
+   </div>
+  </div>
+  <script>
+        // Sample data
+        const sampleData = {
+            members: [
+                { name: "Alex", nickname: "Hacker Dada", role: "The Code Wizard", funFact: "Can debug code in sleep!" },
+                { name: "Sam", nickname: "Meme King", role: "The Comedy Central", funFact: "Has a meme for every situation!" },
+                { name: "Jordan", nickname: "Silent Killer", role: "The Mysterious Genius", funFact: "Speaks less but codes more!" },
+                { name: "Casey", nickname: "Design Guru", role: "The Creative Mind", funFact: "Makes ugly code look beautiful!" }
+            ],
+            truthOrDare: [
+                "Tell us your most embarrassing coding mistake!",
+                "Dare: Do your best impression of a compiler error!",
+                "Truth: What's the weirdest thing you've googled for coding?",
+                "Dare: Explain recursion using only food analogies!",
+                "Truth: Which friend would you want as your pair programming partner?",
+                "Dare: Write a haiku about debugging!",
+                "Truth: What's your biggest fear about job interviews?",
+                "Dare: Act out your reaction to a successful code compilation!"
+            ]
+        };
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '☀';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '🌙';
+            }
+        }
+
+        // Scroll animations
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Spinner functionality
+        function spinWheel() {
+            const spinner = document.getElementById('spinner');
+            const result = document.getElementById('spinner-result');
+            
+            spinner.classList.add('spinning');
+            
+            setTimeout(() => {
+                spinner.classList.remove('spinning');
+                const randomIndex = Math.floor(Math.random() * sampleData.truthOrDare.length);
+                result.textContent = sampleData.truthOrDare[randomIndex];
+            }, 3000);
+        }
+
+        // Modal functionality
+        function openModal(description) {
+            const modal = document.getElementById('modal');
+            const modalDescription = document.getElementById('modal-description');
+            
+            modalDescription.textContent = description;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize
+        window.addEventListener('scroll', handleScrollAnimations);
+        window.addEventListener('load', handleScrollAnimations);
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Elements SDK Integration
+        const defaultConfig = {
+            group_name: "DATA SCIENTISTS",
+            tagline: "Friends • Fun • Code • Memories",
+            hero_subtitle: "Where friendship meets code and memories last forever"
+        };
+
+        async function onConfigChange(config) {
+            const groupTitle = document.getElementById('group-title');
+            const taglineText = document.getElementById('tagline-text');
+            const heroSubtitleText = document.getElementById('hero-subtitle-text');
+            
+            if (groupTitle) {
+                groupTitle.textContent = config.group_name || defaultConfig.group_name;
+            }
+            if (taglineText) {
+                taglineText.textContent = config.tagline || defaultConfig.tagline;
+            }
+            if (heroSubtitleText) {
+                heroSubtitleText.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+            }
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["group_name", config.group_name || defaultConfig.group_name],
+                ["tagline", config.tagline || defaultConfig.tagline],
+                ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle]
+            ]);
+        }
+
+        // Initialize Elements SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a189fcfd4df9a93',t:'MTc2MzY0ODgwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
