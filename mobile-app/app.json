@@ -25,9 +25,10 @@
       },
       "package": "com.datascientistgroup.app",
       "permissions": [
-        "CAMERA",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -48,6 +49,13 @@
         }
       ]
     ],
-    "scheme": "datascientistgroup"
+    "scheme": "datascientistgroup",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bb00358e-45ae-44c1-ac6b-d0c4796cf6c2"
+      }
+    },
+    "owner": "soulix2026"
   }
 }
